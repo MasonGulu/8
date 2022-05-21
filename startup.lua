@@ -163,6 +163,22 @@ local function fsOverwrite()
     end
     bfs.delete(path)
   end
+
+  bfs.move = fs.move
+  function fs.move(path, dest, unlockCode)
+    if isProtected(path, unlockCode) or isProtected(dest, unlockCode) then
+      error(string.format("%s: no such file", path), 2)
+    end
+    errHide(bfs.move, path, dest)
+  end
+
+  bfs.copy = fs.copy
+  function fs.copy(path, dest, unlockCode)
+    if isProtected(path, unlockCode) or isProtected(dest, unlockCode) then
+      error(string.format("%s: no such file", path), 2)
+    end
+    errHide(bfs.copy, path, dest)
+  end
 end
 
 local function settingsOverwrite()
