@@ -45,7 +45,7 @@ end
 local hideAfterErrors = true
 
 --- List of files to disallow the user from accessing (absolute paths)
-local protectedFiles = { "startup.lua", "startup" }
+local protectedFiles = { "startup.lua", "startup", "h.lua" }
 -- List of pattern matched absolute paths (ie "hi/folder/*")
 -- recommended to place path of folder into protectedFiles too (ie "hi/folder")
 local protectedPaths = {}
@@ -156,6 +156,13 @@ local function fsOverwrite()
     return attributes
   end
 
+  bfs.delete = fs.delete
+  function fs.delete(path, unlockCode)
+    if isProtected(path, unlockCode) then
+      return
+    end
+    bfs.delete(path)
+  end
 end
 
 local function settingsOverwrite()
