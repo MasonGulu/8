@@ -35,10 +35,10 @@ end
 local hideBeforeErrors = true
 
 --- This code is executed after the global overrides.
--- You will have access to protected files through bfs, and anything else you call will have access to bfs (you can fix this by setting bfs to nil).
+-- You will have access to protected files through bfs, and anything else you call will have access to bfs (you can fix this by setting local bfs to nil).
 -- fs is overwritten.
 local function afterOverride()
-  -- bfs = nil -- uncomment this to disable bfs access in this function
+  -- local bfs = nil -- uncomment this to disable bfs access in this function
 end
 
 -- Hide errors in afterOverride() from the user
