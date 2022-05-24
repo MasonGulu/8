@@ -24,8 +24,7 @@
 -- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 
-local bfs = {}
-local bsettings = {}
+
 --- This code is executed before all the global overrides. You also have UNPROTECTED file access, meaning you may open and execute other protected files and THEY may open other unprotected files.
 local function beforeOverride()
 
@@ -35,8 +34,7 @@ end
 local hideBeforeErrors = true
 
 --- This code is executed after the global overrides.
--- You will have access to protected files through bfs, and anything else you call will have access to bfs (you can fix this by setting local bfs to nil).
--- fs is overwritten.
+-- fs is overwritten, and you have no access to the protected files
 local function afterOverride()
   -- local bfs = nil -- uncomment this to disable bfs access in this function
 end
@@ -45,7 +43,7 @@ end
 local hideAfterErrors = true
 
 --- List of files to disallow the user from accessing (absolute paths)
-local protectedFiles = { "startup.lua", "startup", "h.lua" }
+local protectedFiles = { "startup.lua", "startup" }
 -- List of pattern matched absolute paths (ie "hi/folder/*")
 -- recommended to place path of folder into protectedFiles too (ie "hi/folder")
 local protectedPaths = {}
@@ -97,6 +95,7 @@ local function errHide(func, ...)
 end
 
 local function fsOverwrite()
+  local bfs = {}
 
   bfs.exists = fs.exists
   function fs.exists(path, unlockCode)
@@ -182,6 +181,7 @@ local function fsOverwrite()
 end
 
 local function settingsOverwrite()
+  local bsettings = {}
   settings.set("shell.allow_disk_startup", false)
 
   bsettings.set = settings.set
